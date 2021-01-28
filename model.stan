@@ -1,13 +1,13 @@
 //https://mc-stan.org/docs/2_18/stan-users-guide/bayesian-measurement-error-model.html
 data {
   int<lower=0> N;
-  real x_meas[N];     // measurement of x 
-  real<lower=0> tau;  // measurement noise
+  vector[N] x_meas;     // measurement of x 
+  vector[N] tau;  // measurement noise
   vector[N] y;          // outcome (variate)
 
 }
 parameters {
-  real x[N];          // unknown true value
+  vector[N] x;          // unknown true value
   real mu_x;          // prior location
   real sigma_x;       // prior scale
   real alpha;           // intercept
