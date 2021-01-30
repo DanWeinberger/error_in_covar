@@ -2,31 +2,31 @@ library(rstan)
 library(HDInterval)
 options(mc.cores = (parallel::detectCores()-1))
 rstan_options(auto_write = TRUE)
-
- d1 <- as.matrix(readRDS('./Data/firstny.rds'))
- d2 <- as.matrix(readRDS('./Data/nyamp.rds'))
-
- phase.med <- apply(d1,2, median)
- phase.sd <- apply(d1,2, sd)
-
- amp.med <- apply(d2,2,median)
- amp.sd <- apply(d2,2,sd)
- amp.med[amp.med>15] <- 15 #pulls outliers back in
- amp.sd[amp.sd>100] <- 100 #pulls outliers back in
- 
- amp.prec <- 1/amp.sd^2
- amp.inv.var <- 1/amp.sd^2
- wgt.mean.amp <- weighted.mean(amp.med, 1/amp.sd^2)
- wgt.var <- sum(amp.inv.var * (amp.med - wgt.mean.amp)^2) #weighted variance
-
- amp.med.std <- (amp.med - wgt.mean.amp)/sqrt(wgt.var) #standardize amplitude, using weighted values
- amp.sd.std <- amp.sd/sqrt(wgt.var) #scale sd
-
-
- input.data.list <- list('phase.med'=phase.med,'phase.sd'=phase.sd,'amp.med.std'=amp.med.std, 'amp.sd.std'=amp.sd.std)
- saveRDS(input.data.list,'./Data/input_data.rds')
-
-input.data.list <- readRDS('./Data/input_data.rds')
+# 
+#  d1 <- as.matrix(readRDS('./Data/firstny.rds'))
+#  d2 <- as.matrix(readRDS('./Data/nyamp.rds'))
+# 
+#  phase.med <- apply(d1,2, median)
+#  phase.sd <- apply(d1,2, sd)
+# 
+#  amp.med <- apply(d2,2,median)
+#  amp.sd <- apply(d2,2,sd)
+#  amp.med[amp.med>15] <- 15 #pulls outliers back in
+#  amp.sd[amp.sd>100] <- 100 #pulls outliers back in
+#  
+#  amp.prec <- 1/amp.sd^2
+#  amp.inv.var <- 1/amp.sd^2
+#  wgt.mean.amp <- weighted.mean(amp.med, 1/amp.sd^2)
+#  wgt.var <- sum(amp.inv.var * (amp.med - wgt.mean.amp)^2) #weighted variance
+# 
+#  amp.med.std <- (amp.med - wgt.mean.amp)/sqrt(wgt.var) #standardize amplitude, using weighted values
+#  amp.sd.std <- amp.sd/sqrt(wgt.var) #scale sd
+# 
+# 
+#  input.data.list <- list('phase.med'=phase.med,'phase.sd'=phase.sd,'amp.med.std'=amp.med.std, 'amp.sd.std'=amp.sd.std)
+#  saveRDS(input.data.list,'./Data/input_data.rds')
+# 
+# input.data.list <- readRDS('./Data/input_data.rds')
 
 phase.med <- input.data.list$phase.med
 phase.sd <- input.data.list$phase.sd
