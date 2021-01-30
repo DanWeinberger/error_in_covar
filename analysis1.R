@@ -26,7 +26,7 @@ rstan_options(auto_write = TRUE)
 #  input.data.list <- list('phase.med'=phase.med,'phase.sd'=phase.sd,'amp.med.std'=amp.med.std, 'amp.sd.std'=amp.sd.std)
 #  saveRDS(input.data.list,'./Data/input_data.rds')
 # 
-# input.data.list <- readRDS('./Data/input_data.rds')
+ input.data.list <- readRDS('./Data/input_data.rds')
 
 phase.med <- input.data.list$phase.med
 phase.sd <- input.data.list$phase.sd
