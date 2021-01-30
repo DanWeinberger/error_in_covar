@@ -67,10 +67,11 @@ med.r2 <- median(r2.iter)
 # plot(x.hdi$x.med, phase.med)
 # abline(a=alpha.med, b=beta.med, col='red')
 
+#"True' X vs True Y
 symbols(x.hdi$x.med, true.y.med, sqrt((1/phase.sd^2)/pi),fg=NA, bg=rgb(0,0,1,0.05) , inches=0.15, ylim=c(-1,1) )
 abline(a=alpha.med, b=beta.med, col='red')
 
-#Observed data with lie overlaid
+#Observed data with regression line overlaid
 symbols(amp.med.std, phase.med, sqrt((1/phase.sd^2)/pi),fg=NA, bg=rgb(0,0,1,0.05) , inches=0.15, ylim=c(-1,1), xlim=c(0,0.15) )
 abline(a=alpha.med, b=beta.med, col='red')
 
@@ -79,4 +80,3 @@ beta.hdi <- hdi(la1$beta, credMass = 0.95)
 beta.hdi
 beta.med
 
-plot( amp.med,x.hdi$x.med)
