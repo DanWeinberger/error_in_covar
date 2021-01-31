@@ -20,8 +20,9 @@ parameters {
 }
 model {
   x ~ normal(mu_x, sigma_x);  // prior for true X
-  true_y ~ normal(alpha + beta * x, sigma_y);
   x_meas ~ normal(x, tau);    // measurement model
+
+  true_y ~ normal(alpha + beta * x, sigma_y);
   y_meas ~ normal(true_y, y_meas_sd);
   
   alpha ~ normal(0, 10);
@@ -29,5 +30,4 @@ model {
   mu_x ~ normal(0, 10);
   sigma_x ~ cauchy(0, 5);
   sigma_y ~ cauchy(0, 5);
-
 }
