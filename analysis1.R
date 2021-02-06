@@ -34,12 +34,17 @@ phase.sd <- input.data.list$phase.sd
 amp.med.std <- input.data.list$amp.med.std
 amp.sd.std <- input.data.list$amp.sd.std
 
-exclude <- which(amp.med.std > 0.0008 )
+exclude <- which(phase.sd > 0.2 ) #These represent models that did not converge well
 
-phase.med <- phase.med[-exclude]
-phase.sd <- phase.sd[-exclude]
-amp.med.std <- amp.med.std[-exclude]
-amp.sd.std <- amp.sd.std[-exclude]
+# phase.med <- phase.med[-exclude]
+# phase.sd <- phase.sd[-exclude]
+# amp.med.std <- amp.med.std[-exclude]
+# amp.sd.std <- amp.sd.std[-exclude]
+
+
+phase.sd[exclude] <- 1e4
+amp.sd.std[exclude] <- 1e4
+
 
 plot( amp.med.std,phase.med)
 
