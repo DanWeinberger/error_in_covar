@@ -3,17 +3,42 @@ library(HDInterval)
 options(mc.cores = (parallel::detectCores()-1))
 rstan_options(auto_write = TRUE)
 
- # d1 <- as.matrix(readRDS('./Data/firstny.rds'))
- # d2 <- -1*pi/6*as.matrix(readRDS('./Data/nyamp.rds')) #multiplyin by -pi/6 converts from scale of amplitude to max derivative
- # #d2 <- as.matrix(readRDS('./Data/nyamp.rds')) #multiplyin by -pi/6 converts from scale of amplitude to max derivative
+
+##Derivative for harmonic
+#lambda= exp(b0 +  amp*cos(2*pi*t/period+phase) + phi)
+#deriv.lambda= -pi/6*amp*sin(2*pi*t/period+phase)*exp(b0 + amp*cos(2*pi*t/period+phase) + phi)
+#Check
+# period=12
+# phase=0.2
+# amp=1
+# t=1:120
+# phi = 0
+# b0=1
+# lambda <- exp(b0 + amp*cos(2*pi*t/period+phase) +phi) 
+# deriv.log.lambda = -pi/6*amp*sin(2*pi*t/period+phase)
+# deriv.lambda = -pi/6*amp*sin(2*pi*t/period+phase)*lambda
+# manual.deriv.lambda=rep(NA, length(deriv.lambda))
+# for(i in 2: length(deriv.lambda)){ manual.deriv.lambda[i] = lambda[i] - lambda[i-1] }
+# 
+# plot(deriv.lambda, type='l')
+# points(manual.deriv.lambda, type='l' ,col='red')
+# max(deriv.lambda)
+
+ #  d1 <- as.matrix(readRDS('./Data/firstny.rds'))
+ #  amp <- as.matrix(readRDS('./Data/nyamp.rds')) #multiplyin by -pi/6 converts from scale of amplitude to max derivative
+ # d2 <- pi/6*amp # sin(2*pi*t/period-phase.shift) ranges from -1 to 1 the max deriv occurs when the harmonic=-1; this cancels out the -1 in front of pi/6*amp
  # 
  # phase.med <- apply(d1,2, median)
  # phase.sd <- apply(d1,2, sd)
  # 
  # amp.med <- apply(d2,2,median)
  # amp.sd <- apply(d2,2,sd)
- # amp.med[amp.med < -5 ] <- -5 #pulls outliers back in
- # amp.sd[amp.sd>5] <- 5 #pulls outliers back in
+ # 
+ # exclude <- which(phase.sd > 0.2 ) #These represent models that did not converge well
+ # phase.sd[exclude] <- 1e2
+ # amp.sd[exclude] <- 1e2
+ # amp.med[exclude] <- 1
+ # 
  # 
  # amp.prec <- 1/amp.sd^2
  # amp.inv.var <- 1/amp.sd^2
@@ -34,16 +59,6 @@ phase.sd <- input.data.list$phase.sd
 amp.med.std <- input.data.list$amp.med.std
 amp.sd.std <- input.data.list$amp.sd.std
 
-exclude <- which(phase.sd > 0.2 ) #These represent models that did not converge well
-
-# phase.med <- phase.med[-exclude]
-# phase.sd <- phase.sd[-exclude]
-# amp.med.std <- amp.med.std[-exclude]
-# amp.sd.std <- amp.sd.std[-exclude]
-
-
-phase.sd[exclude] <- 1e4
-amp.sd.std[exclude] <- 1e4
 
 
 plot( amp.med.std,phase.med)
